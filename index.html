@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Houston Heights SFH Dashboard</title>
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<style>
+body {font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+       margin:0;padding:12px;background:#f7f8fa;color:#1a1a1a;}
+h1 {font-size:1.4rem;margin:8px 0 4px;}
+.kpi {display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;}
+.kpi-card {background:white;border-radius:10px;padding:12px 16px;
+            box-shadow:0 1px 3px rgba(0,0,0,.08);flex:1 1 140px;min-width:130px;}
+.kpi-label {font-size:.75rem;color:#666;}
+.kpi-value {font-size:1.25rem;font-weight:600;margin-top:2px;}
+.chart {background:white;border-radius:10px;padding:8px;margin:12px 0;
+         box-shadow:0 1px 3px rgba(0,0,0,.08);}
+.note {font-size:.8rem;color:#555;margin:8px 0 16px;line-height:1.4;}
+footer {font-size:.75rem;color:#888;margin-top:24px;padding-top:12px;border-top:1px solid #eee;}
+</style>
+</head>
+<body>
+<h1>Houston Heights Single-Family Dashboard</h1>
+<p class="note">Research view · Core ZIPs 77007/77008/77009 · Mobile-optimized · Aug 2026</p>
+
+<div class="kpi">
+  <div class="kpi-card"><div class="kpi-label">Typical Value (77008)</div><div class="kpi-value">~$591k</div></div>
+  <div class="kpi-card"><div class="kpi-label">YoY Change</div><div class="kpi-value" style="color:#c0392b">~-1.0%</div></div>
+  <div class="kpi-card"><div class="kpi-label">30-yr Rate</div><div class="kpi-value">~6.65%</div></div>
+  <div class="kpi-card"><div class="kpi-label">Approx. MOS</div><div class="kpi-value">4.5–4.6</div></div>
+</div>
+
+<div class="chart"><div id="chart1" style="height:420px;"></div></div>
+<div class="chart"><div id="chart2" style="height:420px;"></div></div>
+<div class="chart"><div id="chart3" style="height:420px;"></div></div>
+<div class="chart"><div id="chart4" style="height:380px;"></div></div>
+<div class="chart"><div id="chart5" style="height:400px;"></div></div>
+
+<p class="note">
+<strong>Key observations for retail investors:</strong><br>
+• Heights has shown relative resilience vs. broader Houston metro in recent soft periods, supported by limited historic-district supply and local demand.<br>
+• Mortgage rates remain the dominant short-term affordability lever; inventory tightness provides a buffer.<br>
+• Scenario paths above are illustrative only (simple growth assumptions under rate regimes) — not statistical forecasts.<br>
+• Data compiled from Zillow ZHVI, HAR/MLS, Redfin, FRED. Update via the accompanying Python script when desired.
+</p>
+<footer>
+Generated Aug 2026 · Research / analytics only · Not investment advice<br>
+Repo: https://github.com/andykoswara/houston-heights-dashboard
+</footer>
+
+<script>
+// Chart 1 - Value trajectory
+Plotly.newPlot('chart1', [
+  {x: ["2018-01","2018-07","2019-01","2019-07","2020-01","2020-07","2021-01","2021-07","2022-01","2022-07","2023-01","2023-07","2024-01","2024-07","2025-01","2025-07","2026-01","2026-06","2026-08"],
+   y: [385000,395000,410000,425000,430000,455000,495000,545000,585000,610000,595000,580000,575000,585000,595000,600000,598000,592000,590750],
+   name: "77008 ZHVI (Heights)", line: {color: "#1f77b4", width: 3}},
+  {x: ["2018-01","2018-07","2019-01","2019-07","2020-01","2020-07","2021-01","2021-07","2022-01","2022-07","2023-01","2023-07","2024-01","2024-07","2025-01","2025-07","2026-01","2026-06","2026-08"],
+   y: [210000,218000,225000,232000,235000,250000,275000,310000,340000,355000,345000,330000,325000,320000,315000,310000,305000,275000,263500],
+   name: "Houston Metro ZHVI", line: {color: "#ff7f0e", width: 2, dash: "dot"}}
+], {title: "Typical Home Value — Heights vs Metro", yaxis: {title: "Typical Value ($)", tickprefix: "$", tickformat: ",.0f"}, template: "plotly_white", height: 420, margin: {l:40,r:20,t:60,b:40}, legend: {orientation: "h", yanchor: "bottom", y: 1.02}}, {responsive: true, displayModeBar: true});
+
+// Chart 2 - Rate correlation
+Plotly.newPlot('chart2', [{
+  x: [4.15,4.55,4.45,3.75,3.60,3.05,2.75,2.90,3.45,5.50,6.40,6.85,6.70,6.80,6.90,6.75,6.70,6.55,6.65],
+  y: [0,2.60,3.80,3.66,1.18,5.81,8.79,10.10,7.34,4.27,-2.46,-2.52,-0.86,1.74,1.71,0.84,-0.33,-1.00,-0.21],
+  mode: "markers+text", text: ["01","07","01","07","01","07","01","07","01","07","01","07","01","07","01","07","01","06","08"],
+  textposition: "top center",
+  marker: {size: 12, color: [4.15,4.55,4.45,3.75,3.60,3.05,2.75,2.90,3.45,5.50,6.40,6.85,6.70,6.80,6.90,6.75,6.70,6.55,6.65], colorscale: "RdYlGn_r", showscale: true, colorbar: {title: "Rate %"}},
+  name: "Period change"
+}], {title: "Mortgage Rate vs Subsequent Value Change", xaxis: {title: "30-yr Rate (%)"}, yaxis: {title: "Value Change (%)"}, template: "plotly_white", height: 420}, {responsive: true, displayModeBar: true});
+
+// Chart 3 - Inventory & DOM
+Plotly.newPlot('chart3', [
+  {x: ["2018-01","2018-07","2019-01","2019-07","2020-01","2020-07","2021-01","2021-07","2022-01","2022-07","2023-01","2023-07","2024-01","2024-07","2025-01","2025-07","2026-01","2026-06","2026-08"],
+   y: [2.8,3.1,2.9,2.5,2.2,1.8,1.4,1.2,1.5,2.8,3.5,4.0,4.2,4.0,3.8,4.1,4.3,4.5,4.6], name: "Months of Supply", line: {color: "#2ca02c"}},
+  {x: ["2018-01","2018-07","2019-01","2019-07","2020-01","2020-07","2021-01","2021-07","2022-01","2022-07","2023-01","2023-07","2024-01","2024-07","2025-01","2025-07","2026-01","2026-06","2026-08"],
+   y: [35,38,32,28,25,18,12,10,15,35,45,50,48,42,40,38,40,41,42], name: "Median DOM", yaxis: "y2", line: {color: "#d62728", dash: "dash"}},
+  {x: ["2018-01","2018-07","2019-01","2019-07","2020-01","2020-07","2021-01","2021-07","2022-01","2022-07","2023-01","2023-07","2024-01","2024-07","2025-01","2025-07","2026-01","2026-06","2026-08"],
+   y: [38.5,39.5,41.0,42.5,43.0,45.5,49.5,54.5,58.5,61.0,59.5,58.0,57.5,58.5,59.5,60.0,59.8,59.2,59.1], name: "Value (scaled /10k)", line: {color: "#1f77b4", width: 1, dash: "dot"}}
+], {title: "Inventory Tightness & DOM vs Value", yaxis: {title: "Months Supply / Value scaled"}, yaxis2: {title: "Median DOM", overlaying: "y", side: "right"}, template: "plotly_white", height: 420, legend: {orientation: "h", y: 1.1}}, {responsive: true, displayModeBar: true});
+
+// Chart 4 - $/sqft
+Plotly.newPlot('chart4', [{
+  x: [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025],
+  y: [288,273,258,297,303,313,345,381,385,383,410],
+  type: "bar", marker: {color: "#9467bd"}
+}], {title: "Heights Median Sold $/SqFt (HAR-style)", yaxis: {title: "$ / SqFt"}, template: "plotly_white", height: 380}, {responsive: true, displayModeBar: true});
+
+// Chart 5 - Scenarios
+Plotly.newPlot('chart5', [
+  {x: ["2026-09","2026-12","2027-03","2027-06","2027-09","2027-12","2028-03","2028-06"], y: [599600,608500,617500,626600,635800,645100,654500,664000], name: "Base (~6.5%)", mode: "lines+markers"},
+  {x: ["2026-09","2026-12","2027-03","2027-06","2027-09","2027-12","2028-03","2028-06"], y: [605500,620600,635900,651500,667400,683600,700100,717000], name: "Rates –50 bp", mode: "lines+markers"},
+  {x: ["2026-09","2026-12","2027-03","2027-06","2027-09","2027-12","2028-03","2028-06"], y: [593700,596600,599600,602600,605600,608600,611600,614700], name: "Rates +50 bp", mode: "lines+markers"}
+], {title: "Illustrative Forward Paths (not a formal forecast)", yaxis: {title: "Projected Typical Value ($)", tickprefix: "$", tickformat: ",.0f"}, template: "plotly_white", height: 400, legend: {orientation: "h", y: 1.1}}, {responsive: true, displayModeBar: true});
+</script>
+</body>
+</html>
