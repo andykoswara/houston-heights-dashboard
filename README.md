@@ -1,37 +1,26 @@
-# Houston Heights Single-Family Home Value Dashboard
+# Houston Heights Single-Family & $/SqFt Dashboard
 
-Interactive charts and indicators for **Houston Heights** (primarily ZIPs 77007 / 77008 / 77009) single-family home values, correlations with mortgage rates / inventory, and simple predictive signals.
+Interactive charts for Houston Heights (77007/77008/77009) home values, $/sqft, and correlations with micro/macro drivers.
 
-**Live Pages URL (once enabled):**  
-https://andykoswara.github.io/houston-heights-dashboard/
-
-## Quick access on iPhone
-1. Open the HTML file (or the GitHub Pages link after enabling).
-2. In Safari → Share → Add to Home Screen.
-3. Charts are fully interactive (pinch-zoom, hover, toggle series).
+## Live pages (after enabling GitHub Pages)
+- Main value dashboard: https://andykoswara.github.io/houston-heights-dashboard/
+- **New** $/SqFt correlations: https://andykoswara.github.io/houston-heights-dashboard/sqft_correlations.html
 
 ## Files
-- `houston_heights_dashboard.html` — Fully self-contained interactive dashboard (works offline).
-- `heights_dashboard.py` — Python generator script (run to refresh data / regenerate HTML).
-- `README.md` — This file.
+- `index.html` / `houston_heights_dashboard.html` — original value + rate + inventory charts
+- `sqft_correlations.html` — **new** set correlating median sold $/sqft with:
+  - Mortgage rates
+  - Harris County median household income
+  - Population / migration context
+  - Business establishments
+- `heights_dashboard.py` — generator script
 
-## Enable GitHub Pages (one-time)
-1. Go to the repository **Settings** → **Pages**.
-2. Under "Source" select **Deploy from a branch**.
-3. Branch: `main` / Folder: `/ (root)` → Save.
-4. Wait 1–2 minutes. Your permanent mobile-friendly URL will be live.
+## Data sources
+- HAR MLS median sold $/sqft (1997–2025)
+- FRED: MORTGAGE30US, MHITX48201A052NCEN (Harris income), TXHARR1POP, QCEW establishments
+- Census ACS/SAIPE, Houston Facts / Chronicle migration notes
 
-## Regenerating / updating data
-```bash
-pip install pandas plotly
-python heights_dashboard.py
-```
-Then commit and push the new HTML.
+## Enable GitHub Pages
+Settings → Pages → Deploy from branch `main` / root → Save.
 
-## Data notes (as of late August 2026)
-- Zillow ZHVI for 77008 typical home value ≈ $591k (≈ –1% YoY).
-- Heights has shown relative resilience vs. broader Houston metro due to constrained historic-district supply.
-- Key correlates: 30-year mortgage rates (inverse), months of supply / DOM, local inventory tightness.
-- Sources: Zillow Research, HAR/MLS, Redfin, FRED (Freddie Mac rates).
-
-**Research / analytics only — not investment advice.**
+Research / analytics only — not investment advice.

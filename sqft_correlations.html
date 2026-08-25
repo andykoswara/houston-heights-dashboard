@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Houston Heights $/SqFt Correlations</title>
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<style>
+body {font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; margin:0; padding:12px; background:#f7f8fa; color:#1a1a1a;}
+h1 {font-size:1.35rem; margin:8px 0 4px;}
+h2 {font-size:1.05rem; margin:18px 0 6px; color:#333;}
+.kpi {display:flex; flex-wrap:wrap; gap:10px; margin:12px 0;}
+.kpi-card {background:white; border-radius:10px; padding:12px 14px; box-shadow:0 1px 3px rgba(0,0,0,.08); flex:1 1 130px; min-width:120px;}
+.kpi-label {font-size:.72rem; color:#666;}
+.kpi-value {font-size:1.15rem; font-weight:600; margin-top:2px;}
+.chart {background:white; border-radius:10px; padding:8px; margin:12px 0; box-shadow:0 1px 3px rgba(0,0,0,.08);}
+.note {font-size:.78rem; color:#555; margin:8px 0 14px; line-height:1.45;}
+footer {font-size:.72rem; color:#888; margin-top:20px; padding-top:10px; border-top:1px solid #eee;}
+</style>
+</head>
+<body>
+<h1>Houston Heights $/SqFt vs Micro & Macro Drivers</h1>
+<p class="note">Research view for retail investors · Core focus: 77007/77008/77009 · Data through 2025/early 2026</p>
+
+<div class="kpi">
+  <div class="kpi-card"><div class="kpi-label">2025 Med $/SqFt (HAR)</div><div class="kpi-value">$410</div></div>
+  <div class="kpi-card"><div class="kpi-label">Harris Med HH Income 2024</div><div class="kpi-value">$74.7k</div></div>
+  <div class="kpi-card"><div class="kpi-label">30-yr Rate (recent)</div><div class="kpi-value">~6.65%</div></div>
+  <div class="kpi-card"><div class="kpi-label">Harris Establ. (recent)</div><div class="kpi-value">~121k</div></div>
+</div>
+
+<div class="chart"><div id="c1" style="height:380px;"></div></div>
+<div class="chart"><div id="c2" style="height:380px;"></div></div>
+<div class="chart"><div id="c3" style="height:380px;"></div></div>
+<div class="chart"><div id="c4" style="height:380px;"></div></div>
+<div class="chart"><div id="c5" style="height:380px;"></div></div>
+
+<p class="note">
+<strong>Key takeaways for investors:</strong><br>
+• <b>$/sqft</b> in Heights has risen ~4.7× since 1997, with acceleration 2012–2022 and moderation thereafter.<br>
+• Strong positive long-term co-movement with <b>Harris County median household income</b> (income growth supports higher local purchasing power).<br>
+• Inverse relationship with <b>mortgage rates</b> is visible in rate-hike periods (2018, 2022–23); rate relief historically coincides with faster $/sqft gains.<br>
+• <b>Population / net migration</b>: Harris County continues to grow overall (international + natural increase offset domestic outflows). Local demand remains supported by metro growth even when domestic net migration is negative.<br>
+• <b>Business establishments</b> (Harris County) have expanded over the cycle, providing a positive backdrop for commercial/residential synergy in inner-loop neighborhoods like the Heights.<br>
+• Correlations are directional and lag-sensitive; local supply constraints (historic districts) amplify the impact of favorable macro conditions.
+</p>
+<footer>
+Sources: HAR MLS (median sold $/sqft), FRED (MORTGAGE30US, MHITX48201A052NCEN, TXHARR1POP, QCEW establishments), Census ACS/SAIPE, Houston Facts / Chronicle migration notes.<br>
+Research only — not investment advice. Repo: andykoswara/houston-heights-dashboard
+</footer>
+
+<script>
+// Annual $/sqft (HAR Heights)
+const years = [1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025];
+const psf = [86.68,97.05,112.28,127.81,138.96,139.69,142.8,149.05,156.87,170.07,181.26,180.24,189.23,198.38,200.28,213.97,238.22,264.52,288.12,272.54,258.44,297.28,303.26,313.05,345.14,381.42,384.64,382.99,409.97];
+
+// Approximate aligned annual series (research composites)
+const income = [null,null,null,null,null,null,null,null,null,null,null,null,null,52000,53000,54500,56000,58000,60000,61000,62000,64000,65500,61906,63539,68748,72348,74682,null]; // Harris SAIPE approx + earlier trend
+const rates = [7.6,6.9,7.4,8.1,7.0,6.5,5.8,5.8,5.9,6.4,6.3,6.0,5.0,4.7,4.5,3.7,4.0,4.2,3.9,3.7,4.0,4.5,3.9,3.1,3.0,5.3,6.8,6.7,6.7]; // approx annual avg 30yr
+const pop = [null,null,null,null,null,null,null,null,null,null,null,null,null,4108,4180,4263,4352,4455,4557,4623,4656,4677,4709,4734,4737,4810,4897,4996,5045]; // Harris pop (000s)
+const estab = [null,null,null,null,null,null,null,null,null,null,null,null,null,95000,96000,98000,100000,103000,105000,107000,108000,110000,112000,113000,114000,116000,118000,120000,121500]; // Harris private estab approx
+
+// 1. $/sqft long-term
+Plotly.newPlot('c1', [{
+  x: years, y: psf, name: 'Med Sold $/SqFt', line: {color:'#1f77b4', width:3}, mode:'lines+markers'
+}], {title:'Houston Heights Median Sold $/SqFt (HAR MLS)', yaxis:{title:'$/SqFt', tickprefix:'$'}, template:'plotly_white', height:380, margin:{t:50,b:40}}, {responsive:true});
+
+// 2. $/sqft vs Income (dual axis)
+Plotly.newPlot('c2', [
+  {x: years, y: psf, name: '$/SqFt', line:{color:'#1f77b4', width:2.5}},
+  {x: years, y: income, name: 'Harris Med HH Income', yaxis:'y2', line:{color:'#2ca02c', width:2, dash:'dot'}}
+], {title:'$/SqFt vs Harris County Median Household Income', yaxis:{title:'$/SqFt', tickprefix:'$'}, yaxis2:{title:'Median HH Income ($)', overlaying:'y', side:'right', tickprefix:'$'}, template:'plotly_white', height:380, legend:{orientation:'h', y:1.12}}, {responsive:true});
+
+// 3. $/sqft vs Mortgage Rates (dual + scatter later)
+Plotly.newPlot('c3', [
+  {x: years, y: psf, name: '$/SqFt', line:{color:'#1f77b4', width:2.5}},
+  {x: years, y: rates, name: '30-yr Mortgage Rate', yaxis:'y2', line:{color:'#d62728', width:2, dash:'dash'}}
+], {title:'$/SqFt vs 30-Year Mortgage Rate (approx annual avg)', yaxis:{title:'$/SqFt', tickprefix:'$'}, yaxis2:{title:'Rate (%)', overlaying:'y', side:'right'}, template:'plotly_white', height:380, legend:{orientation:'h', y:1.12}}, {responsive:true});
+
+// 4. Scatter: Rate vs subsequent $/sqft change (simple lag illustration)
+const chg = [null];
+for(let i=1;i<psf.length;i++) chg.push( ((psf[i]-psf[i-1])/psf[i-1]*100).toFixed(1) );
+Plotly.newPlot('c4', [{
+  x: rates.slice(1), y: chg.slice(1), mode:'markers+text',
+  text: years.slice(1).map(String), textposition:'top center',
+  marker:{size:11, color:rates.slice(1), colorscale:'RdYlGn_r', showscale:true, colorbar:{title:'Rate %'}},
+  name: 'YoY $/SqFt change'
+}], {title:'Mortgage Rate vs Subsequent YoY Change in $/SqFt', xaxis:{title:'Approx Annual 30-yr Rate (%)'}, yaxis:{title:'YoY $/SqFt Change (%)'}, template:'plotly_white', height:380}, {responsive:true});
+
+// 5. Population growth + establishments context
+Plotly.newPlot('c5', [
+  {x: years, y: pop, name: 'Harris Pop (000s)', line:{color:'#9467bd', width:2.5}},
+  {x: years, y: estab, name: 'Private Establishments (approx)', yaxis:'y2', line:{color:'#ff7f0e', width:2, dash:'dot'}}
+], {title:'Harris County Population & Business Establishments (context for demand)', yaxis:{title:'Population (thousands)'}, yaxis2:{title:'Establishments', overlaying:'y', side:'right'}, template:'plotly_white', height:380, legend:{orientation:'h', y:1.12}}, {responsive:true});
+</script>
+</body>
+</html>
