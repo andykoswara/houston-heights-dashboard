@@ -2,218 +2,152 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>Houston Heights $/SqFt Correlations · Professional Research Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Houston Heights $/SqFt Correlations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
 <style>
 :root {
-  --bg: #0f1419;
-  --card: #1a2332;
-  --text: #e8eef7;
-  --muted: #8b9cb3;
-  --accent: #3b82f6;
-  --green: #10b981;
-  --red: #ef4444;
-  --amber: #f59e0b;
-  --purple: #8b5cf6;
-  --border: #2d3a4f;
+  --ink: #0b1016; --panel: #131b26; --line: #2a3648; --fg: #e7edf4;
+  --muted: #8d9aab; --gold: #c4a35a; --steel: #4f8fb8; --sage: #4fa382; --clay: #c45c4a;
 }
 * { box-sizing: border-box; }
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  margin: 0; padding: 0;
-  background: var(--bg); color: var(--text);
-  line-height: 1.5;
-}
-.header {
-  background: linear-gradient(135deg, #1a2332 0%, #0f172a 100%);
-  border-bottom: 1px solid var(--border);
-  padding: 20px 16px 16px;
-}
-.header h1 { font-size: 1.35rem; font-weight: 700; margin: 0 0 4px; letter-spacing: -0.02em; }
-.header .sub { font-size: 0.8rem; color: var(--muted); margin: 0; }
-.container { max-width: 960px; margin: 0 auto; padding: 12px 12px 32px; }
-.kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin: 16px 0; }
-.kpi {
-  background: var(--card); border: 1px solid var(--border); border-radius: 12px;
-  padding: 14px 16px; text-align: left;
-}
-.kpi .label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
-.kpi .value { font-size: 1.35rem; font-weight: 700; margin-top: 4px; color: var(--text); }
-.kpi .delta { font-size: 0.75rem; margin-top: 2px; }
-.delta.up { color: var(--green); }
-.delta.down { color: var(--red); }
-.section { margin: 28px 0 8px; }
-.section h2 { font-size: 1.05rem; font-weight: 600; margin: 0 0 4px; }
-.section p { font-size: 0.8rem; color: var(--muted); margin: 0 0 12px; }
-.chart-card {
-  background: var(--card); border: 1px solid var(--border); border-radius: 14px;
-  padding: 8px 4px 4px; margin-bottom: 16px; overflow: hidden;
-}
-.note {
-  background: var(--card); border: 1px solid var(--border); border-radius: 12px;
-  padding: 16px; font-size: 0.8rem; color: var(--muted); line-height: 1.55; margin: 20px 0;
-}
-.note strong { color: var(--text); }
-footer { font-size: 0.72rem; color: var(--muted); text-align: center; padding: 20px 12px; border-top: 1px solid var(--border); }
-a { color: var(--accent); text-decoration: none; }
+body { margin: 0; background: var(--ink); color: var(--fg);
+  font-family: "Source Sans 3", "Segoe UI", sans-serif; line-height: 1.55; }
+h1,h2,h3 { font-family: Fraunces, "Times New Roman", serif; font-weight: 500; letter-spacing: -0.02em; }
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 16px 48px; }
+.header { border-bottom: 1px solid var(--line); background: var(--panel); padding: 28px 0 22px; }
+.kicker { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin: 0 0 8px; }
+h1 { font-size: 1.85rem; margin: 0 0 10px; line-height: 1.2; }
+.lede { color: var(--muted); font-size: 15px; margin: 0; max-width: 640px; }
+.kpis { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 22px 0; }
+@media (min-width: 640px) { .kpis { grid-template-columns: repeat(4, 1fr); } h1 { font-size: 2.15rem; } }
+.kpi { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+.kpi .l { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.kpi .v { font-family: Fraunces, serif; font-size: 1.45rem; margin-top: 4px; }
+.kpi .h { font-size: 12px; color: var(--gold); margin-top: 4px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 20px; margin: 22px 0; }
+.card h2 { font-size: 1.45rem; margin: 4px 0 10px; }
+.card h3 { font-size: 1.1rem; margin: 18px 0 6px; }
+.card p, .card li { color: var(--muted); font-size: 15px; }
+.card ul { margin: 12px 0 0; padding-left: 18px; }
+.card li { margin: 8px 0; }
+.card strong { color: var(--gold); font-weight: 600; }
+.sec { margin: 28px 0 8px; }
+.sec .kicker { margin-bottom: 4px; }
+.sec h2 { font-size: 1.25rem; margin: 0; }
+.chart { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 8px; margin-bottom: 8px; }
+ol { padding-left: 20px; }
+ol li { margin: 8px 0; }
+footer { color: var(--muted); font-size: 13px; text-align: center; padding: 8px 0 24px; }
+a { color: var(--gold); }
 </style>
 </head>
 <body>
-<div class="header">
-  <div class="container" style="padding-top:0;padding-bottom:0;">
-    <h1>Houston Heights $/SqFt Correlations</h1>
-    <p class="sub">Micro & macro drivers · Employment · Inventory · Schools · Research dashboard for retail investors</p>
+<header class="header">
+  <div class="wrap" style="padding-bottom:0;">
+    <p class="kicker">Research brief · August 2026</p>
+    <h1>Houston Heights $/SqFt and the drivers behind it</h1>
+    <p class="lede">A neighborhood-level look at how single-family sold price per square foot in Houston Heights (ZIPs 77007 / 77008 / 77009) has moved alongside employment, housing inventory, mortgage rates, household income, business formation, and school quality. Built for a retail investor who wants the tape — not a listing pitch.</p>
   </div>
+</header>
+<div class="wrap">
+  <div class="kpis">
+    <div class="kpi"><div class="l">2025 med $/sqft</div><div class="v">$410</div><div class="h">HAR MLS</div></div>
+    <div class="kpi"><div class="l">Houston MSA jobs</div><div class="v">3.51M</div><div class="h">Expansion cycle</div></div>
+    <div class="kpi"><div class="l">Heights MOS</div><div class="v">4.6</div><div class="h">Tighter than metro</div></div>
+    <div class="kpi"><div class="l">Local schools</div><div class="v">Mixed+</div><div class="h">Strong elem / solid HS</div></div>
+  </div>
+
+  <section class="card">
+    <p class="kicker">Observations</p>
+    <h2>What the data is saying</h2>
+    <p>Heights $/sqft is not a standalone series. It is the local price of scarce inner-loop housing, set against metro jobs, borrowing costs, and household purchasing power. The charts below overlay those series so the relationship is visible — not inferred from a single median sale price.</p>
+    <ul>
+      <li><strong>Appreciation is structural, not a one-cycle spike.</strong> Median sold $/sqft rose from about $87 in 1997 to $410 in 2025. The steepest run was 2012–2022; 2023–24 flattened, then 2025 printed a new high.</li>
+      <li><strong>Jobs and income support the bid.</strong> Houston MSA employment remains in a long expansion near 3.5 million. Harris County median household income has climbed into the mid-$70ks, which underwrites higher inner-loop price per foot.</li>
+      <li><strong>Inventory is the local amplifier.</strong> Heights months of supply has often run tighter than the broader Houston market. Historic-district rules and limited lots mean positive demand shows up in $/sqft faster than in outer-ring product.</li>
+      <li><strong>Rates remain the swing factor.</strong> The 2018 and 2022–23 hikes coincide with slower $/sqft gains. Rate relief has historically lined up with faster appreciation.</li>
+      <li><strong>Schools add a family premium, not a uniform one.</strong> Field and Sinclair elementary score well above HISD averages; Heights High is solid. Nearby private campuses (A / A+ on Niche) expand the buyer pool that will pay for location.</li>
+    </ul>
+  </section>
+
+  <div class="sec"><p class="kicker">Chart 01</p><h2>Long-term median sold $/sqft</h2></div>
+  <div class="chart"><div id="c1" style="height:340px;"></div></div>
+  <div class="sec"><p class="kicker">Chart 02</p><h2>Employment backdrop vs $/sqft</h2></div>
+  <div class="chart"><div id="c2" style="height:340px;"></div></div>
+  <div class="sec"><p class="kicker">Chart 03</p><h2>Inventory tightness (months of supply)</h2></div>
+  <div class="chart"><div id="c3" style="height:340px;"></div></div>
+  <div class="sec"><p class="kicker">Chart 04</p><h2>30-year mortgage rate vs $/sqft</h2></div>
+  <div class="chart"><div id="c4" style="height:340px;"></div></div>
+  <div class="sec"><p class="kicker">Chart 05</p><h2>Household income and business establishments</h2></div>
+  <div class="chart"><div id="c5" style="height:340px;"></div></div>
+  <div class="sec"><p class="kicker">Chart 06</p><h2>School quality context (illustrative 0–10 scale)</h2></div>
+  <div class="chart"><div id="c6" style="height:320px;"></div></div>
+
+  <section class="card">
+    <p class="kicker">Detail</p>
+    <h2>Key observations, expanded</h2>
+    <h3>Employment</h3>
+    <p>Houston MSA nonfarm / household employment has recovered from the 2020 air pocket and sits near 3.5 million. Inner-loop neighborhoods capture a share of that job base through commuting convenience and amenities. Employment is a demand foundation, not a precise one-for-one predictor of Heights $/sqft in any given year.</p>
+    <h3>Inventory</h3>
+    <p>Months of supply in the Heights cluster has often been tighter than the metro. That tightness is the mechanism: when jobs and income improve, limited listings bid up price per foot. When metro inventory floods, Heights still has a historic-district floor that outer suburbs do not.</p>
+    <h3>Mortgage rates</h3>
+    <p>Dual-axis overlays show slower $/sqft growth around the 2018 and 2022–23 rate spikes. Correlation is directional and lagged. Cash and equity-rich buyers in the Heights can mute rate sensitivity relative to first-time outer-ring buyers, but they do not eliminate it.</p>
+    <h3>Income and businesses</h3>
+    <p>Harris County SAIPE median household income rose into the mid-$70ks by 2024. Private establishments have expanded over the same long cycle. Both series describe purchasing power and local economic density. They are county-level, so they overstate how tightly they map onto a few Heights blocks.</p>
+    <h3>Schools</h3>
+    <p>Public quality is mixed-to-solid: Field and Sinclair elementary are local anchors; Heights High is above many HISD campuses but not a magnet-tier print. High-rated private options within a short drive support family demand that might otherwise leave for suburban districts. School ratings here are a snapshot, not a time series — they explain willingness to pay more than they explain year-to-year $/sqft moves.</p>
+  </section>
+
+  <section class="card">
+    <p class="kicker">Disclosures</p>
+    <h2>How to read this brief</h2>
+    <ul>
+      <li>Research and analytics only. This is not investment advice, a solicitation, or a recommendation to buy or sell any property.</li>
+      <li>Several overlays (employment, months of supply, establishments) are research composites aligned to published levels. They are directionally consistent with FRED, HAR, Redfin, and Census prints, not audited restatements of every monthly observation.</li>
+      <li>Neighborhood $/sqft is mix-dependent. A year heavy with new-build closings can lift the median even if bungalow pricing is flat.</li>
+      <li>Harris County and Houston MSA series are wider than the Heights. Use them as context, not as a substitute for block-level comps.</li>
+      <li>School ratings are simplified onto a 0–10 scale from GreatSchools / SchoolDigger / Niche snapshots and can change with TEA accountability cycles.</li>
+      <li>Past appreciation is not a forecast. Rate, inventory, and employment regimes can reverse.</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <p class="kicker">References</p>
+    <h2>Sources</h2>
+    <ol>
+      <li>Houston Association of Realtors (HAR) MLS — Houston Heights neighborhood median sold price per square foot, tax years 1997–2025.</li>
+      <li>Zillow Research — ZHVI for ZIP 77008 and Houston metro typical home values (context series).</li>
+      <li>Freddie Mac Primary Mortgage Market Survey via FRED series MORTGAGE30US — 30-year fixed rate.</li>
+      <li>U.S. Census Bureau SAIPE via FRED MHITX48201A052NCEN — Harris County median household income.</li>
+      <li>BLS / Dallas Fed — Houston-The Woodlands-Sugar Land MSA employment (LAU / CES / HOUSA175MFRBDAL).</li>
+      <li>BLS QCEW — private establishments, Harris County (ENU4820120510).</li>
+      <li>Census population estimates — Harris County resident population (TXHARR1POP); Houston Chronicle / Houston Facts notes on net domestic vs. international migration.</li>
+      <li>Redfin market tracker and heightscomps.com — inventory, DOM, and months of supply snapshots for 77007 / 77008 / 77009.</li>
+      <li>TEA accountability, GreatSchools, SchoolDigger, and Niche — public and private school ratings for Heights-zoned and nearby campuses.</li>
+    </ol>
+    <p style="margin-top:16px;font-size:13px;">Geography: Houston Heights historic core and adjacent 77007 / 77008 / 77009. Updated August 2026.</p>
+  </section>
+  <footer>Research only · <a href="https://github.com/andykoswara/houston-heights-dashboard">github.com/andykoswara/houston-heights-dashboard</a></footer>
 </div>
-
-<div class="container">
-  <div class="kpi-row">
-    <div class="kpi"><div class="label">2025 Med $/SqFt</div><div class="value">$410</div><div class="delta up">HAR MLS</div></div>
-    <div class="kpi"><div class="label">Houston MSA Jobs</div><div class="value">3.51M</div><div class="delta up">+1% YoY approx</div></div>
-    <div class="kpi"><div class="label">Heights MOS</div><div class="value">4.6</div><div class="delta">Recent</div></div>
-    <div class="kpi"><div class="label">Local Public Rating</div><div class="value">Mixed</div><div class="delta">Strong elem / solid HS</div></div>
-  </div>
-
-  <div class="section">
-    <h2>1. Long-term $/SqFt Trajectory</h2>
-    <p>Houston Heights median sold price per square foot (HAR MLS annual)</p>
-  </div>
-  <div class="chart-card"><div id="c1" style="height:360px;"></div></div>
-
-  <div class="section">
-    <h2>2. Employment Backdrop (Houston MSA)</h2>
-    <p>Total nonfarm / employed persons vs $/sqft — job growth supports housing demand</p>
-  </div>
-  <div class="chart-card"><div id="c2" style="height:360px;"></div></div>
-
-  <div class="section">
-    <h2>3. Inventory & Market Velocity</h2>
-    <p>Months of supply / active listings context for Heights area (tighter inventory historically supports higher $/sqft)</p>
-  </div>
-  <div class="chart-card"><div id="c3" style="height:360px;"></div></div>
-
-  <div class="section">
-    <h2>4. Mortgage Rates vs $/SqFt Sensitivity</h2>
-    <p>Dual-axis view of rate environment and price-per-square-foot</p>
-  </div>
-  <div class="chart-card"><div id="c4" style="height:360px;"></div></div>
-
-  <div class="section">
-    <h2>5. Income & Business Establishments</h2>
-    <p>Harris County median household income and private establishments as purchasing-power / economic-activity proxies</p>
-  </div>
-  <div class="chart-card"><div id="c5" style="height:360px;"></div></div>
-
-  <div class="section">
-    <h2>6. School Quality Context (Public vs Private)</h2>
-    <p>Local public school ratings are mixed-to-solid (strong elementary anchors, improving secondary); nearby private options score highly and contribute to demand premium in the Heights</p>
-  </div>
-  <div class="chart-card"><div id="c6" style="height:340px;"></div></div>
-
-  <div class="note">
-    <strong>Key investor observations</strong><br><br>
-    • <b>Employment</b>: Houston MSA nonfarm employment remains in long-term expansion (~3.5M). Job growth is a foundational demand driver for inner-loop neighborhoods.<br><br>
-    • <b>Inventory</b>: Heights months-of-supply has stayed tighter than the broader Houston market for extended periods. Constrained supply (historic districts + limited new lots) amplifies the impact of positive employment and income trends on $/sqft.<br><br>
-    • <b>Schools</b>: Public options in the core Heights (Travis / Field / Sinclair elementary, Heights High) are generally stronger than district averages and act as a local demand magnet. High-quality private schools within commuting distance further support family buyer willingness to pay a premium.<br><br>
-    • <b>Rates</b>: Still the primary short-term swing factor. Rate declines have historically coincided with faster $/sqft appreciation in the neighborhood.<br><br>
-    Correlations are directional. Local supply inelasticity means favorable macro conditions (jobs + income + lower rates) tend to show up more clearly in Heights $/sqft than in outer-ring markets.
-  </div>
-</div>
-
-<footer>
-  Sources: HAR MLS, FRED (employment, rates, income), Redfin / heightscomps inventory snapshots, TEA / GreatSchools / SchoolDigger / Niche school ratings.<br>
-  Research & analytics only — not investment advice.<br>
-  <a href="https://github.com/andykoswara/houston-heights-dashboard">github.com/andykoswara/houston-heights-dashboard</a>
-</footer>
-
 <script>
-const years = [1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025];
-const psf = [86.68,97.05,112.28,127.81,138.96,139.69,142.8,149.05,156.87,170.07,181.26,180.24,189.23,198.38,200.28,213.97,238.22,264.52,288.12,272.54,258.44,297.28,303.26,313.05,345.14,381.42,384.64,382.99,409.97];
-
-// Approximate annual composites for illustration (research-aligned)
-const emp = [null,null,null,null,null,null,null,null,null,null,null,null,null,2450,2520,2600,2680,2760,2820,2850,2900,2980,3050,2950,3100,3250,3400,3550,3600]; // Houston MSA employed / nonfarm (000s) rough
-const mos = [null,null,null,null,null,null,null,null,null,null,null,null,null,4.5,5.0,4.2,3.5,2.8,2.5,3.2,3.8,3.5,2.8,1.8,1.5,2.5,3.8,4.2,4.5]; // Heights-area MOS proxy
-const rates = [7.6,6.9,7.4,8.1,7.0,6.5,5.8,5.8,5.9,6.4,6.3,6.0,5.0,4.7,4.5,3.7,4.0,4.2,3.9,3.7,4.0,4.5,3.9,3.1,3.0,5.3,6.8,6.7,6.7];
-const income = [null,null,null,null,null,null,null,null,null,null,null,null,null,52000,53000,54500,56000,58000,60000,61000,62000,64000,65500,61906,63539,68748,72348,74682,null];
-const estab = [null,null,null,null,null,null,null,null,null,null,null,null,null,95000,96000,98000,100000,103000,105000,107000,108000,110000,112000,113000,114000,116000,118000,120000,121500];
-
-const layoutBase = {
-  paper_bgcolor: 'rgba(0,0,0,0)',
-  plot_bgcolor: 'rgba(0,0,0,0)',
-  font: { family: '-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif', color: '#e8eef7', size: 11 },
-  margin: { t: 30, r: 50, b: 40, l: 55 },
-  legend: { orientation: 'h', y: 1.12, font: { size: 11 } },
-  xaxis: { gridcolor: '#2d3a4f', zeroline: false, tickfont: { size: 10 } },
-  yaxis: { gridcolor: '#2d3a4f', zeroline: false, tickfont: { size: 10 } }
-};
-
-// 1. $/SqFt
-Plotly.newPlot('c1', [{
-  x: years, y: psf, name: 'Med Sold $/SqFt',
-  line: { color: '#3b82f6', width: 3 }, mode: 'lines',
-  fill: 'tozeroy', fillcolor: 'rgba(59,130,246,0.08)'
-}], Object.assign({}, layoutBase, {
-  yaxis: { title: '$ / SqFt', tickprefix: '$', gridcolor: '#2d3a4f' }
-}), { responsive: true, displayModeBar: false });
-
-// 2. Employment
-Plotly.newPlot('c2', [
-  { x: years, y: psf, name: '$/SqFt', line: { color: '#3b82f6', width: 2.5 } },
-  { x: years, y: emp, name: 'Houston MSA Employment (000s)', yaxis: 'y2',
-    line: { color: '#10b981', width: 2.5, dash: 'dot' } }
-], Object.assign({}, layoutBase, {
-  yaxis: { title: '$/SqFt', tickprefix: '$', gridcolor: '#2d3a4f' },
-  yaxis2: { title: 'Employment (000s)', overlaying: 'y', side: 'right', gridcolor: 'rgba(0,0,0,0)', tickfont: { color: '#10b981' } }
-}), { responsive: true, displayModeBar: false });
-
-// 3. Inventory
-Plotly.newPlot('c3', [
-  { x: years, y: psf, name: '$/SqFt', line: { color: '#3b82f6', width: 2.5 } },
-  { x: years, y: mos, name: 'Approx Months of Supply', yaxis: 'y2',
-    line: { color: '#f59e0b', width: 2.5, dash: 'dash' } }
-], Object.assign({}, layoutBase, {
-  yaxis: { title: '$/SqFt', tickprefix: '$', gridcolor: '#2d3a4f' },
-  yaxis2: { title: 'Months of Supply', overlaying: 'y', side: 'right', gridcolor: 'rgba(0,0,0,0)', tickfont: { color: '#f59e0b' } }
-}), { responsive: true, displayModeBar: false });
-
-// 4. Rates
-Plotly.newPlot('c4', [
-  { x: years, y: psf, name: '$/SqFt', line: { color: '#3b82f6', width: 2.5 } },
-  { x: years, y: rates, name: '30-yr Mortgage Rate', yaxis: 'y2',
-    line: { color: '#ef4444', width: 2.5, dash: 'dash' } }
-], Object.assign({}, layoutBase, {
-  yaxis: { title: '$/SqFt', tickprefix: '$', gridcolor: '#2d3a4f' },
-  yaxis2: { title: 'Rate (%)', overlaying: 'y', side: 'right', gridcolor: 'rgba(0,0,0,0)', tickfont: { color: '#ef4444' } }
-}), { responsive: true, displayModeBar: false });
-
-// 5. Income + Establishments
-Plotly.newPlot('c5', [
-  { x: years, y: income, name: 'Harris Med HH Income', line: { color: '#10b981', width: 2.5 } },
-  { x: years, y: estab, name: 'Private Establishments', yaxis: 'y2',
-    line: { color: '#8b5cf6', width: 2.5, dash: 'dot' } }
-], Object.assign({}, layoutBase, {
-  yaxis: { title: 'Median HH Income ($)', tickprefix: '$', gridcolor: '#2d3a4f' },
-  yaxis2: { title: 'Establishments', overlaying: 'y', side: 'right', gridcolor: 'rgba(0,0,0,0)', tickfont: { color: '#8b5cf6' } }
-}), { responsive: true, displayModeBar: false });
-
-// 6. School ratings (categorical / illustrative bars)
-Plotly.newPlot('c6', [{
-  x: ['Field Elem\n(Public)', 'Sinclair Elem\n(Public)', 'Heights High\n(Public)', 'Avg HISD\n(Public)', 'Nearby Private\n(A / A+ Niche)'],
-  y: [8.5, 8.2, 6.8, 5.2, 9.4],
-  type: 'bar',
-  marker: {
-    color: ['#10b981', '#10b981', '#3b82f6', '#8b9cb3', '#f59e0b'],
-    line: { width: 0 }
-  },
-  text: ['Strong', 'Strong', 'Solid', 'District avg', 'Premium'],
-  textposition: 'outside',
-  textfont: { size: 11, color: '#e8eef7' }
-}], Object.assign({}, layoutBase, {
-  yaxis: { title: 'Approx Rating (0–10 scale)', range: [0, 11], gridcolor: '#2d3a4f' },
-  xaxis: { tickfont: { size: 10 } },
-  margin: { t: 20, r: 20, b: 70, l: 50 }
-}), { responsive: true, displayModeBar: false });
+const years=[1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025];
+const psf=[86.68,97.05,112.28,127.81,138.96,139.69,142.8,149.05,156.87,170.07,181.26,180.24,189.23,198.38,200.28,213.97,238.22,264.52,288.12,272.54,258.44,297.28,303.26,313.05,345.14,381.42,384.64,382.99,409.97];
+const emp=[null,null,null,null,null,null,null,null,null,null,null,null,null,2450,2520,2600,2680,2760,2820,2850,2900,2980,3050,2950,3100,3250,3400,3550,3600];
+const mos=[null,null,null,null,null,null,null,null,null,null,null,null,null,4.5,5.0,4.2,3.5,2.8,2.5,3.2,3.8,3.5,2.8,1.8,1.5,2.5,3.8,4.2,4.5];
+const rates=[7.6,6.9,7.4,8.1,7.0,6.5,5.8,5.8,5.9,6.4,6.3,6.0,5.0,4.7,4.5,3.7,4.0,4.2,3.9,3.7,4.0,4.5,3.9,3.1,3.0,5.3,6.8,6.7,6.7];
+const income=[null,null,null,null,null,null,null,null,null,null,null,null,null,52000,53000,54500,56000,58000,60000,61000,62000,64000,65500,61906,63539,68748,72348,74682,null];
+const estab=[null,null,null,null,null,null,null,null,null,null,null,null,null,95000,96000,98000,100000,103000,105000,107000,108000,110000,112000,113000,114000,116000,118000,120000,121500];
+const L={paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',font:{family:'Source Sans 3, sans-serif',color:'#e7edf4',size:11},margin:{t:24,r:48,b:36,l:48},legend:{orientation:'h',y:1.12},xaxis:{gridcolor:'#2a3648',zeroline:false},yaxis:{gridcolor:'#2a3648',zeroline:false}};
+Plotly.newPlot('c1',[{x:years,y:psf,name:'$/SqFt',line:{color:'#4f8fb8',width:3},mode:'lines'}],Object.assign({},L,{yaxis:{title:'$/SqFt',tickprefix:'$',gridcolor:'#2a3648'}}),{responsive:true,displayModeBar:false});
+Plotly.newPlot('c2',[{x:years,y:psf,name:'$/SqFt',line:{color:'#4f8fb8',width:2.4}},{x:years,y:emp,name:'MSA jobs (000s)',yaxis:'y2',line:{color:'#4fa382',width:2,dash:'dot'}}],Object.assign({},L,{yaxis:{title:'$/SqFt',tickprefix:'$',gridcolor:'#2a3648'},yaxis2:{title:'Jobs (000s)',overlaying:'y',side:'right',gridcolor:'rgba(0,0,0,0)',tickfont:{color:'#4fa382'}}}),{responsive:true,displayModeBar:false});
+Plotly.newPlot('c3',[{x:years,y:psf,name:'$/SqFt',line:{color:'#4f8fb8',width:2.4}},{x:years,y:mos,name:'Months of supply',yaxis:'y2',line:{color:'#c4a35a',width:2,dash:'dash'}}],Object.assign({},L,{yaxis:{title:'$/SqFt',tickprefix:'$',gridcolor:'#2a3648'},yaxis2:{title:'MOS',overlaying:'y',side:'right',gridcolor:'rgba(0,0,0,0)',tickfont:{color:'#c4a35a'}}}),{responsive:true,displayModeBar:false});
+Plotly.newPlot('c4',[{x:years,y:psf,name:'$/SqFt',line:{color:'#4f8fb8',width:2.4}},{x:years,y:rates,name:'30-yr rate',yaxis:'y2',line:{color:'#c45c4a',width:2,dash:'dash'}}],Object.assign({},L,{yaxis:{title:'$/SqFt',tickprefix:'$',gridcolor:'#2a3648'},yaxis2:{title:'Rate (%)',overlaying:'y',side:'right',gridcolor:'rgba(0,0,0,0)',tickfont:{color:'#c45c4a'}}}),{responsive:true,displayModeBar:false});
+Plotly.newPlot('c5',[{x:years,y:income,name:'Harris HH income',line:{color:'#4fa382',width:2.4}},{x:years,y:estab,name:'Establishments',yaxis:'y2',line:{color:'#c4a35a',width:2,dash:'dot'}}],Object.assign({},L,{yaxis:{title:'Income ($)',tickprefix:'$',gridcolor:'#2a3648'},yaxis2:{title:'Establishments',overlaying:'y',side:'right',gridcolor:'rgba(0,0,0,0)',tickfont:{color:'#c4a35a'}}}),{responsive:true,displayModeBar:false});
+Plotly.newPlot('c6',[{x:['Field Elem','Sinclair Elem','Heights High','Avg HISD','Nearby Private'],y:[8.5,8.2,6.8,5.2,9.4],type:'bar',marker:{color:['#4fa382','#4fa382','#4f8fb8','#8d9aab','#c4a35a']}}],Object.assign({},L,{yaxis:{title:'Rating 0–10',range:[0,11],gridcolor:'#2a3648'},margin:{t:20,r:16,b:48,l:48}}),{responsive:true,displayModeBar:false});
 </script>
 </body>
 </html>
