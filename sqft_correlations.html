@@ -1,1 +1,237 @@
-PLACEHOLDER
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Houston Heights $/SqFt Correlations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<style>
+:root {
+  --ink: #0b1016; --panel: #131b26; --line: #2a3648; --fg: #e7edf4;
+  --muted: #8d9aab; --gold: #c4a35a; --steel: #4f8fb8; --sage: #4fa382; --clay: #c45c4a;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--ink); color: var(--fg);
+  font-family: "Source Sans 3", "Segoe UI", sans-serif; line-height: 1.55; }
+h1,h2,h3 { font-family: Fraunces, "Times New Roman", serif; font-weight: 500; letter-spacing: -0.02em; }
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 16px 48px; }
+.header { border-bottom: 1px solid var(--line); background: var(--panel); padding: 28px 0 22px; }
+.kicker { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin: 0 0 8px; }
+h1 { font-size: 1.85rem; margin: 0 0 10px; line-height: 1.2; }
+.lede { color: var(--muted); font-size: 15px; margin: 0; max-width: 640px; }
+.jump { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.jump a {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px;
+  border: 1px solid var(--line); border-radius: 999px; color: var(--muted);
+  text-decoration: none; font-size: 14px;
+}
+.jump a:hover { border-color: var(--gold); color: var(--fg); }
+.kpis { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 22px 0; }
+@media (min-width: 640px) { .kpis { grid-template-columns: repeat(4, 1fr); } h1 { font-size: 2.15rem; } }
+.kpi { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+.kpi .l { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.kpi .v { font-family: Fraunces, serif; font-size: 1.45rem; margin-top: 4px; font-variant-numeric: tabular-nums; }
+.kpi .h { font-size: 12px; color: var(--gold); margin-top: 4px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 20px; margin: 22px 0; }
+.card h2 { font-size: 1.45rem; margin: 4px 0 10px; }
+.card h3 { font-size: 1.1rem; margin: 22px 0 6px; color: var(--fg); }
+.card p, .card li { color: var(--muted); font-size: 15px; }
+.card ul { margin: 12px 0 0; padding-left: 18px; }
+.card ol.obs { margin: 14px 0 0; padding-left: 0; list-style: none; }
+.card ol.obs li { margin: 14px 0; }
+.card li { margin: 8px 0; }
+.card strong { color: var(--gold); font-weight: 600; }
+.split { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line); }
+.sec { margin: 28px 0 8px; }
+.sec .kicker { margin-bottom: 4px; }
+.sec h2 { font-size: 1.25rem; margin: 0; }
+.caption { color: var(--muted); font-size: 14px; margin: 8px 0 18px; }
+.chart { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 8px; margin-bottom: 8px; }
+ol.refs { padding-left: 20px; }
+ol.refs li { margin: 8px 0; color: var(--muted); font-size: 14px; }
+footer { color: var(--muted); font-size: 13px; text-align: center; padding: 8px 0 24px; }
+a { color: var(--gold); }
+.scroll { scroll-margin-top: 12px; }
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="wrap" style="padding-bottom:0;">
+    <p class="kicker">Research brief · August 2026</p>
+    <h1>Houston Heights $/SqFt and the drivers behind it</h1>
+    <p class="lede">A neighborhood-level look at how single-family sold price per square foot in Houston Heights (ZIPs 77007 / 77008 / 77009) has moved alongside employment, housing inventory, mortgage rates, household income, business formation, migration, and school quality. Built for a retail investor who wants the tape — not a listing pitch.</p>
+    <nav class="jump" aria-label="On this page">
+      <a href="#observations">Observations</a>
+      <a href="#summary">Key summary</a>
+      <a href="#charts">Charts</a>
+      <a href="#detail">Expanded notes</a>
+      <a href="#disclosures">Disclosures</a>
+      <a href="#sources">Sources</a>
+    </nav>
+  </div>
+</header>
+<div class="wrap">
+  <div class="kpis">
+    <div class="kpi"><div class="l">2025 med $/sqft</div><div class="v">$410</div><div class="h">HAR MLS</div></div>
+    <div class="kpi"><div class="l">Houston MSA jobs</div><div class="v">3.51M</div><div class="h">Expansion cycle</div></div>
+    <div class="kpi"><div class="l">Heights MOS</div><div class="v">4.6</div><div class="h">Tighter than metro</div></div>
+    <div class="kpi"><div class="l">Local schools</div><div class="v">Mixed+</div><div class="h">Strong elem / solid HS</div></div>
+  </div>
+
+  <section id="observations" class="card scroll">
+    <p class="kicker">Observations</p>
+    <h2>How to read what follows</h2>
+    <p>This brief treats Houston Heights single-family sold price per square foot as a local tape, then sets it against the metro and county series that actually move the bid: jobs, inventory, mortgage rates, household income, business formation, net migration, and school quality.</p>
+    <p>The notes are a research readout, not a valuation model and not a buy or sell call. “Correlation” here means the overlays move together in a way you can see on the chart — not a claimed causal coefficient, and not a forecast of next year’s median. Neighborhood $/sqft is mix-dependent: a year heavy with new-build closings can lift the median even if bungalow pricing is flat. Employment, income, establishments, and population are Harris County or Houston MSA prints. Use them as context, not as a substitute for block-level comps.</p>
+    <p>What follows is a six-point summary of the key observations, then the charts, then a longer discussion of each overlay, disclosures, and sources.</p>
+
+    <div id="summary" class="split scroll">
+      <h3 style="margin-top:0;">Summary of key observations</h3>
+      <ol class="obs">
+        <li><strong>01 — Appreciation is structural, not a one-cycle spike — and size matters.</strong> Neighborhood median sold $/sqft rose from $86.68 in 1997 to $409.97 in 2025 — about 4.7×. Cottages (≤1,600 sqft) print a persistent $/sqft premium; large homes (≥2,600 sqft) trade at a discount. The steepest run was 2012–2022. 2023–24 stalled, then 2025 printed a new high.</li>
+        <li><strong>02 — Jobs and income still underwrite the bid.</strong> Houston MSA employment remains in a long expansion near 3.51 million. Harris County median household income reached $74,682 in 2024, which supports higher inner-loop price per foot.</li>
+        <li><strong>03 — Inventory is the local amplifier.</strong> Heights months of supply has often run tighter than the broader Houston market. Historic-district rules and limited lots mean positive demand shows up in $/sqft faster than in outer-ring product.</li>
+        <li><strong>04 — Mortgage rates remain the swing factor.</strong> The 2018 and 2022–23 hikes coincide with slower $/sqft gains. Sub-4% rates in 2020–21 lined up with the fastest recent run. Rate relief has historically preceded faster appreciation.</li>
+        <li><strong>05 — Schools add a family premium, not a uniform one.</strong> Field (8.5) and Sinclair (8.2) sit well above the HISD average (~5.2). Heights High is solid at 6.8. Nearby private campuses (~9.4) expand the buyer pool that will pay for location.</li>
+        <li><strong>06 — County migration is mixed; Heights still scarce.</strong> Harris County still grows, with international inflows offsetting weaker domestic net. That is a metro absorption story. Inside the loop, lot scarcity — not county population — is what converts demand into $/sqft.</li>
+      </ol>
+    </div>
+  </section>
+
+  <div id="charts" class="scroll"></div>
+  <div class="sec"><p class="kicker">Chart 01</p><h2>Median sold $/sqft by home size</h2></div>
+  <div class="chart"><div id="c1" style="width:100%;height:360px;"></div></div>
+  <p class="caption">Three size bands scaled from the HAR Houston Heights neighborhood median (1997–2025). Cottages (≤1,600 sqft) carry a land-driven $/sqft premium; mid-size tracks the overall median; large homes (≥2,600 sqft) print lower $/sqft as new-build mix grows. Research composites — not audited HAR restatements by size band.</p>
+
+  <div class="sec"><p class="kicker">Chart 02</p><h2>Employment backdrop vs $/sqft</h2></div>
+  <div class="chart"><div id="c2" style="height:340px;"></div></div>
+  <p class="caption">Houston MSA jobs (right axis) versus Heights $/sqft. Both trend up over the long cycle. The 2020 jobs dip did not reverse the price path.</p>
+
+  <div class="sec"><p class="kicker">Chart 03</p><h2>Inventory tightness (months of supply)</h2></div>
+  <div class="chart"><div id="c3" style="height:340px;"></div></div>
+  <p class="caption">Heights months of supply versus $/sqft. MOS compressed toward ~1.5 months in 2021, then rebuilt toward ~4.5–4.6 by 2025 — still tighter than a balanced ~6-month market.</p>
+
+  <div class="sec"><p class="kicker">Chart 04</p><h2>30-year mortgage rate vs $/sqft</h2></div>
+  <div class="chart"><div id="c4" style="height:340px;"></div></div>
+  <p class="caption">Freddie Mac 30-year fixed (right axis) versus Heights $/sqft. Slower price gains cluster around the 2018 and 2022–23 rate spikes.</p>
+
+  <div class="sec"><p class="kicker">Chart 05</p><h2>Household income and business establishments</h2></div>
+  <div class="chart"><div id="c5" style="height:340px;"></div></div>
+  <p class="caption">Harris County SAIPE median household income (left) and private establishments (right). Purchasing power and economic density at county scale — context, not a Heights-block series.</p>
+
+  <div class="sec"><p class="kicker">Chart 06</p><h2>School quality context (illustrative 0–10 scale)</h2></div>
+  <div class="chart"><div id="c6" style="width:100%;height:320px;"></div></div>
+  <p class="caption">Snapshot scores, not a time series. Field and Sinclair anchor the public side; Heights High is above many HISD campuses; nearby private options sit at the top of the scale.</p>
+
+  <section id="detail" class="card scroll">
+    <p class="kicker">Detail</p>
+    <h2>Key observations, expanded</h2>
+    <p>The summary above is the tape in six lines. The notes below unpack the same six points with the numbers, the lags, and the limits of each overlay.</p>
+
+    <h3>01. The price path — and the size spread</h3>
+    <p>HAR’s Houston Heights neighborhood median sold $/sqft printed $86.68 in 1997 and $409.97 in 2025. Treated as a smooth path that is about 5.7% compounded annually — it was not smooth. The GFC barely nicked the series (2008 $180.24 versus 2007 $181.26). 2016–17 actually declined ($288.12 to $258.44) before the 2018–22 run. 2023–24 was a stall ($384.64 / $382.99), then 2025 made a new high.</p>
+    <p>Size is the mix that hides inside that median. Chart 01 splits the tape into three research bands: cottages ≤1,600 sqft, mid-size 1,600–2,600 sqft, and large ≥2,600 sqft. In the Heights, land is scarce and lots are often fixed at 50×100. A small bungalow still sits on a full lot, so a larger share of the sale price is land — which shows up as a higher $/sqft. Large new builds pack more finished square footage onto similar (or smaller) lots, so $/sqft runs lower even when total price is higher. By 2025 the composite puts cottages near ~$484 /sqft, mid-size at the $410 median, and large product near ~$361 /sqft. That spread is the practical takeaway: compare comps inside the same size band, not against the neighborhood median alone.</p>
+
+    <h3>02. Employment</h3>
+    <p>Houston–The Woodlands–Sugar Land MSA employment recovered from the 2020 air pocket and sits near 3.51 million. Inner-loop neighborhoods capture a share of that job base through commuting convenience and amenities. Employment is a demand foundation, not a precise one-for-one predictor of Heights $/sqft in any given year. The 2020 jobs dip is visible on the overlay; the price series barely paused. That is consistent with a supply-constrained pocket inside a still-expanding metro, not with a one-industry company town.</p>
+
+    <h3>03. Inventory</h3>
+    <p>Months of supply in the Heights cluster compressed toward about 1.5 months in the 2021 frenzy and has rebuilt toward about 4.5–4.6 by 2025. That is still tighter than a conventional ~6-month balanced market, and it has often run tighter than the broader Houston metro. Tightness is the mechanism: when jobs and income improve, limited listings bid up price per foot. Historic-district rules and a finite lot grid mean Heights does not add supply the way an outer-ring master plan does. When metro inventory floods, Heights still has a floor those suburbs do not.</p>
+
+    <h3>04. Mortgage rates</h3>
+    <p>The 30-year Freddie Mac PMMS ran near 3.0% in 2021, spiked to about 6.8% in 2023, and has hovered around 6.65–6.7% in 2024–25. Dual-axis overlays show slower $/sqft growth around the 2018 and 2022–23 hikes, and the fastest recent run during the sub-4% window. Correlation is directional and lagged — rates do not print tomorrow’s median. Cash and equity-rich buyers in the Heights can mute rate sensitivity relative to first-time outer-ring buyers, but they do not eliminate it. At ~6.7%, payment-constrained demand is the working assumption until the rate regime changes.</p>
+
+    <h3>05. Income, businesses, and migration</h3>
+    <p>Harris County SAIPE median household income rose from $61,906 in 2020 to $74,682 in 2024. Private establishments have expanded over the same long cycle, from roughly 95,000 around 2010 to about 121,500 in the latest composite. Both series describe purchasing power and local economic density. They are county-level, so they overstate how tightly they map onto a few Heights blocks.</p>
+    <p>Harris County resident population is still growing (on the order of 5.05 million in recent estimates). Net domestic migration has been weaker — in some years negative — while international inflows and natural increase have kept the county expanding. That is a metro absorption story. It does not isolate in-migration to 77007 / 77008 / 77009. For Heights pricing, the binding constraint is lot scarcity inside the loop, not the county headcount.</p>
+
+    <h3>06. Schools</h3>
+    <p>Public quality is mixed-to-solid. Field Elementary (~8.5) and Sinclair Elementary (~8.2) are local anchors versus an HISD-wide snapshot near 5.2. Heights High (~6.8) is above many HISD campuses but is not a magnet-tier print. High-rated private options within a short drive — Strake Jesuit, Episcopal High, and similar A / A+ Niche names, mapped here to ~9.4 on a 0–10 scale — support family demand that might otherwise leave for suburban districts. School ratings here are a snapshot, not a time series. They explain willingness to pay more than they explain year-to-year $/sqft moves, and they can change with TEA accountability cycles.</p>
+
+    <h3>How the pieces fit</h3>
+    <p>The working model is straightforward. MSA jobs and county income set the bid. Heights inventory scarcity converts that bid into $/sqft. Mortgage rates time the cycle. Schools segment the buyer pool that will pay for the location. County migration is background noise unless it changes the job or income path. None of these is a sufficient statistic on its own, and past appreciation is not a forecast. Rate, inventory, and employment regimes can reverse.</p>
+  </section>
+
+  <section id="disclosures" class="card scroll">
+    <p class="kicker">Disclosures</p>
+    <h2>How to read this brief</h2>
+    <ul>
+      <li>Research and analytics only. This is not investment advice, a solicitation, or a recommendation to buy or sell any property.</li>
+      <li>Several overlays (employment, months of supply, establishments) are research composites aligned to published levels. They are directionally consistent with FRED, HAR, Redfin, and Census prints, not audited restatements of every monthly observation.</li>
+      <li>Chart 01 size bands (cottage ≤1,600 sqft, mid 1,600–2,600, large ≥2,600) are research composites scaled from the HAR Houston Heights neighborhood median using fixed premiums and discounts that widen as new-build mix grows. HAR does not publish a continuous public size-band time series for this neighborhood; treat the bands as directional, not audited restatements of every closed sale.</li>
+      <li>Neighborhood $/sqft is mix-dependent. A year heavy with new-build closings can lift the median even if bungalow pricing is flat. Always stack comps inside the same size band.</li>
+      <li>Harris County and Houston MSA series are wider than the Heights. Use them as context, not as a substitute for block-level comps.</li>
+      <li>School ratings are simplified onto a 0–10 scale from GreatSchools / SchoolDigger / Niche snapshots and can change with TEA accountability cycles.</li>
+      <li>Past appreciation is not a forecast. Rate, inventory, and employment regimes can reverse.</li>
+      <li>No position is recommended. A retail investor should verify current MLS comps, taxes, insurance, flood risk, and HOA or historic-district constraints before acting on any neighborhood thesis.</li>
+    </ul>
+  </section>
+
+  <section id="sources" class="card scroll">
+    <p class="kicker">References</p>
+    <h2>Sources</h2>
+    <ol class="refs">
+      <li>Houston Association of Realtors (HAR) MLS — Houston Heights neighborhood median sold price per square foot, tax years 1997–2025. <a href="https://www.har.com">har.com</a></li>
+      <li>Zillow Research — ZHVI for ZIP 77008 and Houston metro typical home values (context series). <a href="https://www.zillow.com/research/data/">zillow.com/research/data</a></li>
+      <li>Freddie Mac Primary Mortgage Market Survey via FRED series <a href="https://fred.stlouisfed.org/series/MORTGAGE30US">MORTGAGE30US</a> — 30-year fixed rate.</li>
+      <li>U.S. Census Bureau SAIPE via FRED <a href="https://fred.stlouisfed.org/series/MHITX48201A052NCEN">MHITX48201A052NCEN</a> — Harris County median household income.</li>
+      <li>BLS / Dallas Fed — Houston–The Woodlands–Sugar Land MSA employment (LAU / CES / HOUSA175MFRBDAL).</li>
+      <li>BLS QCEW via FRED <a href="https://fred.stlouisfed.org/series/ENU4820120510">ENU4820120510</a> — private establishments, Harris County.</li>
+      <li>Census population estimates via FRED <a href="https://fred.stlouisfed.org/series/TXHARR1POP">TXHARR1POP</a> — Harris County resident population; Houston Chronicle / Houston Facts notes on net domestic versus international migration.</li>
+      <li>Redfin market tracker and heightscomps.com — inventory, days on market, and months of supply snapshots for 77007 / 77008 / 77009.</li>
+      <li>TEA accountability, <a href="https://www.greatschools.org">GreatSchools</a>, <a href="https://www.schooldigger.com">SchoolDigger</a>, and <a href="https://www.niche.com">Niche</a> — public and private school ratings for Heights-zoned and nearby campuses.</li>
+    </ol>
+    <p style="margin-top:16px;font-size:13px;">Geography: Houston Heights historic core and adjacent 77007 / 77008 / 77009. Updated August 2026. Research only.</p>
+  </section>
+  <footer>Research only · <a href="https://github.com/andykoswara/houston-heights-dashboard">github.com/andykoswara/houston-heights-dashboard</a></footer>
+</div>
+<script>
+const years=[1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025];
+const psf=[86.68,97.05,112.28,127.81,138.96,139.69,142.8,149.05,156.87,170.07,181.26,180.24,189.23,198.38,200.28,213.97,238.22,264.52,288.12,272.54,258.44,297.28,303.26,313.05,345.14,381.42,384.64,382.99,409.97];
+/* Size-band composites scaled from HAR neighborhood median. Cottages carry a land premium; large product a finished-sqft discount that widens with new-build mix. */
+const psfCottage=[93.61,104.81,121.26,138.03,150.08,150.87,154.22,160.97,169.42,188.78,201.2,200.07,210.05,220.2,222.31,243.93,271.57,301.55,328.46,318.87,302.37,347.82,354.81,375.66,414.17,457.7,453.88,451.93,483.76];
+const psfMid=psf.slice();
+const psfLarge=[82.35,92.2,106.67,121.42,132.01,132.71,135.66,141.6,149.03,158.17,168.57,167.62,175.98,184.49,186.26,192.57,214.4,238.07,259.31,239.84,227.43,261.61,266.87,269.22,296.82,328.02,338.48,337.03,360.77];
+const emp=[null,null,null,null,null,null,null,null,null,null,null,null,null,2450,2520,2600,2680,2760,2820,2850,2900,2980,3050,2950,3100,3250,3400,3550,3600];
+const mos=[null,null,null,null,null,null,null,null,null,null,null,null,null,4.5,5.0,4.2,3.5,2.8,2.5,3.2,3.8,3.5,2.8,1.8,1.5,2.5,3.8,4.2,4.5];
+const rates=[7.6,6.9,7.4,8.1,7.0,6.5,5.8,5.8,5.9,6.4,6.3,6.0,5.0,4.7,4.5,3.7,4.0,4.2,3.9,3.7,4.0,4.5,3.9,3.1,3.0,5.3,6.8,6.7,6.7];
+const income=[null,null,null,null,null,null,null,null,null,null,null,null,null,52000,53000,54500,56000,58000,60000,61000,62000,64000,65500,61906,63539,68748,72348,74682,null];
+const estab=[null,null,null,null,null,null,null,null,null,null,null,null,null,95000,96000,98000,100000,103000,105000,107000,108000,110000,112000,113000,114000,116000,118000,120000,121500];
+const L={paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',font:{family:'Source Sans 3, sans-serif',color:'#e7edf4',size:11},margin:{t:24,r:48,b:36,l:48},legend:{orientation:'h',y:1.14},xaxis:{gridcolor:'#2a3648',zeroline:false},yaxis:{gridcolor:'#2a3648',zeroline:false}};
+Plotly.newPlot('c1',[
+  {x:years,y:psfCottage,name:'Cottage ≤1,600 sqft',line:{color:'#c4a35a',width:2.6},mode:'lines'},
+  {x:years,y:psfMid,name:'Mid 1,600–2,600 sqft',line:{color:'#4f8fb8',width:2.8},mode:'lines'},
+  {x:years,y:psfLarge,name:'Large ≥2,600 sqft',line:{color:'#4fa382',width:2.6,dash:'dot'},mode:'lines'}
+],Object.assign({},L,{yaxis:{title:'$/SqFt',tickprefix:'$',gridcolor:'#2a3648'},margin:{t:36,r:24,b:36,l:48}}),{responsive:true,displayModeBar:false});
+Plotly.newPlot('c2',[{x:years,y:psf,name:'$/SqFt',line:{color:'#4f8fb8',width:2.4}},{x:years,y:emp,name:'MSA jobs (000s)',yaxis:'y2',line:{color:'#4fa382',width:2,dash:'dot'}}],Object.assign({},L,{yaxis:{title:'$/SqFt',tickprefix:'$',gridcolor:'#2a3648'},yaxis2:{title:'Jobs (000s)',overlaying:'y',side:'right',gridcolor:'rgba(0,0,0,0)',tickfont:{color:'#4fa382'}}}),{responsive:true,displayModeBar:false});
+Plotly.newPlot('c3',[{x:years,y:psf,name:'$/SqFt',line:{color:'#4f8fb8',width:2.4}},{x:years,y:mos,name:'Months of supply',yaxis:'y2',line:{color:'#c4a35a',width:2,dash:'dash'}}],Object.assign({},L,{yaxis:{title:'$/SqFt',tickprefix:'$',gridcolor:'#2a3648'},yaxis2:{title:'MOS',overlaying:'y',side:'right',gridcolor:'rgba(0,0,0,0)',tickfont:{color:'#c4a35a'}}}),{responsive:true,displayModeBar:false});
+Plotly.newPlot('c4',[{x:years,y:psf,name:'$/SqFt',line:{color:'#4f8fb8',width:2.4}},{x:years,y:rates,name:'30-yr rate',yaxis:'y2',line:{color:'#c45c4a',width:2,dash:'dash'}}],Object.assign({},L,{yaxis:{title:'$/SqFt',tickprefix:'$',gridcolor:'#2a3648'},yaxis2:{title:'Rate (%)',overlaying:'y',side:'right',gridcolor:'rgba(0,0,0,0)',tickfont:{color:'#c45c4a'}}}),{responsive:true,displayModeBar:false});
+Plotly.newPlot('c5',[{x:years,y:income,name:'Harris HH income',line:{color:'#4fa382',width:2.4}},{x:years,y:estab,name:'Establishments',yaxis:'y2',line:{color:'#c4a35a',width:2,dash:'dot'}}],Object.assign({},L,{yaxis:{title:'Income ($)',tickprefix:'$',gridcolor:'#2a3648'},yaxis2:{title:'Establishments',overlaying:'y',side:'right',gridcolor:'rgba(0,0,0,0)',tickfont:{color:'#c4a35a'}}}),{responsive:true,displayModeBar:false});
+Plotly.newPlot('c6',[{
+  y:['Avg HISD','Heights High','Sinclair Elem','Field Elem','Nearby Private'],
+  x:[5.2,6.8,8.2,8.5,9.4],
+  type:'bar',
+  orientation:'h',
+  marker:{color:['#8d9aab','#4f8fb8','#4fa382','#4fa382','#c4a35a']},
+  text:['5.2','6.8','8.2','8.5','9.4'],
+  textposition:'outside',
+  textfont:{color:'#e7edf4',size:12},
+  cliponaxis:false,
+  hovertemplate:'%{y}: %{x}<extra></extra>'
+}],Object.assign({},L,{
+  showlegend:false,
+  margin:{t:16,r:48,b:40,l:110},
+  xaxis:{title:'Rating 0–10',range:[0,11],gridcolor:'#2a3648',zeroline:false,tickfont:{color:'#8d9aab'}},
+  yaxis:{automargin:true,gridcolor:'rgba(0,0,0,0)',tickfont:{color:'#e7edf4',size:12}}
+}),{responsive:true,displayModeBar:false});
+function resizePlots(){['c1','c2','c3','c4','c5','c6'].forEach(function(id){var el=document.getElementById(id);if(el) Plotly.Plots.resize(el);});}
+window.addEventListener('load', function(){ setTimeout(resizePlots, 50); setTimeout(resizePlots, 400); });
+window.addEventListener('resize', resizePlots);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ resizePlots(); });
+</script>
+</body>
+</html>
