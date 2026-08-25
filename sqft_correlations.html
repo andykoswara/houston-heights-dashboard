@@ -124,7 +124,7 @@ a { color: var(--gold); }
   <p class="caption">Harris County SAIPE median household income (left) and private establishments (right). Purchasing power and economic density at county scale — context, not a Heights-block series.</p>
 
   <div class="sec"><p class="kicker">Chart 06</p><h2>School quality context (illustrative 0–10 scale)</h2></div>
-  <div class="chart"><div id="c6" style="height:320px;"></div></div>
+  <div class="chart"><div id="c6" style="width:100%;height:320px;"></div></div>
   <p class="caption">Snapshot scores, not a time series. Field and Sinclair anchor the public side; Heights High is above many HISD campuses; nearby private options sit at the top of the scale.</p>
 
   <section id="detail" class="card scroll">
@@ -201,7 +201,27 @@ Plotly.newPlot('c2',[{x:years,y:psf,name:'$/SqFt',line:{color:'#4f8fb8',width:2.
 Plotly.newPlot('c3',[{x:years,y:psf,name:'$/SqFt',line:{color:'#4f8fb8',width:2.4}},{x:years,y:mos,name:'Months of supply',yaxis:'y2',line:{color:'#c4a35a',width:2,dash:'dash'}}],Object.assign({},L,{yaxis:{title:'$/SqFt',tickprefix:'$',gridcolor:'#2a3648'},yaxis2:{title:'MOS',overlaying:'y',side:'right',gridcolor:'rgba(0,0,0,0)',tickfont:{color:'#c4a35a'}}}),{responsive:true,displayModeBar:false});
 Plotly.newPlot('c4',[{x:years,y:psf,name:'$/SqFt',line:{color:'#4f8fb8',width:2.4}},{x:years,y:rates,name:'30-yr rate',yaxis:'y2',line:{color:'#c45c4a',width:2,dash:'dash'}}],Object.assign({},L,{yaxis:{title:'$/SqFt',tickprefix:'$',gridcolor:'#2a3648'},yaxis2:{title:'Rate (%)',overlaying:'y',side:'right',gridcolor:'rgba(0,0,0,0)',tickfont:{color:'#c45c4a'}}}),{responsive:true,displayModeBar:false});
 Plotly.newPlot('c5',[{x:years,y:income,name:'Harris HH income',line:{color:'#4fa382',width:2.4}},{x:years,y:estab,name:'Establishments',yaxis:'y2',line:{color:'#c4a35a',width:2,dash:'dot'}}],Object.assign({},L,{yaxis:{title:'Income ($)',tickprefix:'$',gridcolor:'#2a3648'},yaxis2:{title:'Establishments',overlaying:'y',side:'right',gridcolor:'rgba(0,0,0,0)',tickfont:{color:'#c4a35a'}}}),{responsive:true,displayModeBar:false});
-Plotly.newPlot('c6',[{x:['Field Elem','Sinclair Elem','Heights High','Avg HISD','Nearby Private'],y:[8.5,8.2,6.8,5.2,9.4],type:'bar',marker:{color:['#4fa382','#4fa382','#4f8fb8','#8d9aab','#c4a35a']}}],Object.assign({},L,{yaxis:{title:'Rating 0–10',range:[0,11],gridcolor:'#2a3648'},margin:{t:20,r:16,b:48,l:48}}),{responsive:true,displayModeBar:false});
+Plotly.newPlot('c6',[{
+  y:['Avg HISD','Heights High','Sinclair Elem','Field Elem','Nearby Private'],
+  x:[5.2,6.8,8.2,8.5,9.4],
+  type:'bar',
+  orientation:'h',
+  marker:{color:['#8d9aab','#4f8fb8','#4fa382','#4fa382','#c4a35a']},
+  text:['5.2','6.8','8.2','8.5','9.4'],
+  textposition:'outside',
+  textfont:{color:'#e7edf4',size:12},
+  cliponaxis:false,
+  hovertemplate:'%{y}: %{x}<extra></extra>'
+}],Object.assign({},L,{
+  showlegend:false,
+  margin:{t:16,r:48,b:40,l:110},
+  xaxis:{title:'Rating 0–10',range:[0,11],gridcolor:'#2a3648',zeroline:false,tickfont:{color:'#8d9aab'}},
+  yaxis:{automargin:true,gridcolor:'rgba(0,0,0,0)',tickfont:{color:'#e7edf4',size:12}}
+}),{responsive:true,displayModeBar:false});
+function resizePlots(){['c1','c2','c3','c4','c5','c6'].forEach(function(id){var el=document.getElementById(id);if(el) Plotly.Plots.resize(el);});}
+window.addEventListener('load', function(){ setTimeout(resizePlots, 50); setTimeout(resizePlots, 400); });
+window.addEventListener('resize', resizePlots);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ resizePlots(); });
 </script>
 </body>
 </html>
